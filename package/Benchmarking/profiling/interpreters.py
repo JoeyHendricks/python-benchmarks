@@ -55,6 +55,7 @@ class ProfilerStatisticsInterpreter(Crud):
         payload = []
         for row in self.iterate_through_profiled_stack():
             # Dividing payload into multiple inserts to work around server-less variable restrictions
+
             if self._connection_url[0:6] == "sqlite" and len(payload) == 10:
                 # Sending and nuking payload variable when exceeding SQLite's max amount of variables.
                 self.bulk_insert(

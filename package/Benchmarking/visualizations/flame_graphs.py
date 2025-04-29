@@ -33,6 +33,9 @@ class FlameGraph(CodePaths):
             tcn=test_case_name,
             test_id=test_id
         )
+        print("xxxxxxx")
+        print(self.list_of_samples)
+        print("xxxxxxx")
         self._current_number_of_children = 0
         self.test_case_name = test_case_name
         self.json = [

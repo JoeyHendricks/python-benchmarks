@@ -2,6 +2,7 @@ from .._database.models import TableModels
 from sqlalchemy_utils import database_exists
 from sqlalchemy.engine import create_engine
 from sqlalchemy import inspect
+from sqlalchemy.sql import Insert
 
 
 class CommonDatabaseContextManager(TableModels):
@@ -127,10 +128,9 @@ class CommonDatabaseInteractions(CommonDatabaseContextManager):
         engine, connection = self.spawn_connection(connection_url)
 
         # Building bulk_insert command.
-        statement = table.insert()
-
-        # Executing inserting payload.
-        self.execute(connection, [statement, payload], bulk_insert=True)
+        with engine.begin() as conn:  # Automatically handles commit
+            stmt: Insert = table.insert()
+            conn.execute(stmt, payload)  # payload must be a list of dicts
 
         # Closing connection.
         self.close_connection(connection)

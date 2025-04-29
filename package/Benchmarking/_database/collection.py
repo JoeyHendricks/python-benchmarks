@@ -78,10 +78,8 @@ class Read(CommonDatabaseInteractions):
             float(row.cumulative_time) for row in self.execute_sql_statement(
                 connection_url=url,
                 query=select(
-                    [
                         table.c.sample_id.distinct(),
                         table.c.cumulative_time
-                    ]
                 ).where(table.c.test_id == test_id)
             )
         ]
@@ -98,7 +96,7 @@ class Read(CommonDatabaseInteractions):
         return [
             float(row.test_id) for row in self.execute_sql_statement(
                 connection_url=url,
-                query=select([table.c.test_id]).distinct().limit(number).order_by(table.c.test_id.desc())
+                query=select(table.c.test_id).distinct().limit(number).order_by(table.c.test_id.desc())
             )
         ]
 
@@ -114,7 +112,7 @@ class Read(CommonDatabaseInteractions):
         return [
             str(row.test_id) for row in self.execute_sql_statement(
                 connection_url=url,
-                query=select([table.c.test_id]).distinct().limit(number)
+                query=select(table.c.test_id).distinct().limit(number)
             )
         ]
 
@@ -130,7 +128,7 @@ class Read(CommonDatabaseInteractions):
             [
                 row[0] for row in self.execute_sql_statement(
                     connection_url=url,
-                    query=select([func.count(table.c.test_id.distinct())])
+                    query=select(func.count(table.c.test_id.distinct()))
                 )
             ]
             [0]
@@ -227,9 +225,7 @@ class Read(CommonDatabaseInteractions):
             str(row.sample_id) for row in self.execute_sql_statement(
                 connection_url=url,
                 query=select(
-                    [
                         table.c.sample_id
-                    ]
                 ).where(
                     table.c.test_id == test_id
                 ).distinct()
